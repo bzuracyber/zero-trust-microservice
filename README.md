@@ -55,15 +55,6 @@ The system must:
 This lab is designed to simulate a **full RMF lifecycle** in a Zero Trust microservice environment, producing both **technical implementations** and **compliance artifacts**.  
 It serves as a hands‑on training platform for engineers, ISSEs, and security architects working in **DoD and regulated environments**.
 
-
-# 🔐 Zero Trust Microservice Lab: Keycloak + OPA + FastAPI
-
-This lab demonstrates a hybrid Zero Trust architecture using:
-
-- **Keycloak** for authentication and identity federation  
-- **Open Policy Agent (OPA)** for policy-based access control  
-- **FastAPI** as the microservice backend  
-
 ---
 
 ## 🧠 Why This Stack?
@@ -88,7 +79,7 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 
 ---
 
-## 🛠️ Setup Instructions
+## 🛠️ Lab Setup Instructions
 
 ### 1. Clone the Repo
 
