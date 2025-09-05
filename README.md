@@ -35,18 +35,18 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 ### 1. Clone the Repo
 
 ```bash
-    git clone https://github.com/bzuracyber/zero-trust-microservice.git
+git clone https://github.com/bzuracyber/zero-trust-microservice.git
 
-    cd zero-trust-lab
+cd zero-trust-lab
 ```
 
 ### 2. Start Keycloak
 
 ```bash
-    docker run -p 8080:8080 \
-      -e KEYCLOAK_ADMIN=admin \
-      -e KEYCLOAK_ADMIN_PASSWORD=admin \
-      quay.io/keycloak/keycloak:latest start-dev
+docker run -p 8080:8080 \
+-e KEYCLOAK_ADMIN=admin \
+-e KEYCLOAK_ADMIN_PASSWORD=admin \
+quay.io/keycloak/keycloak:latest start-dev
 ```
 
 - Access Keycloak at http://localhost:8080
@@ -57,7 +57,7 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 ### 3. Start OPA Server
 
  ```bash
-    opa run --server --log-level debug --set=decision_logs.console=true
+opa run --server --log-level debug --set=decision_logs.console=true
 ```
 - OPA listens on http://localhost:8181
 - Create a policy file policy.rego:
