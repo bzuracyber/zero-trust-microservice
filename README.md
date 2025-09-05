@@ -62,16 +62,16 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 - OPA listens on http://localhost:8181
 - Create a policy file policy.rego:
 
-    # OPA policy language
-        package authz
+# OPA policy language
+    package authz
 
-        default allow = false
+     default allow = false
 
-            allow {
-              input.method == "GET"
-              input.path == "/data"
-              input.user == "alice"
-            }
+         allow {
+             input.method == "GET"
+            input.path == "/data"
+            input.user == "alice"
+           }
 
 Load it into OPA:
 
