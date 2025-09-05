@@ -83,7 +83,7 @@ Load it into OPA:
   Install dependencies:
 
  ```bash
-    pip install fastapi uvicorn python-jose requests
+ pip install fastapi uvicorn python-jose requests
 ```
    Create main.py:
    
@@ -123,7 +123,7 @@ Load it into OPA:
 Run the app:
 
 ```bash
-    uvicorn main:app --reload
+uvicorn main:app --reload
 ```
 
 ## 🔍 Testing the Flow
@@ -131,8 +131,9 @@ Get a token from Keycloak using your client credentials
 
 Call FastAPI with the token:
 
-    ```bash
-    curl -H "Authorization: Bearer <your_token>" http://localhost:8000/data
+```bash
+curl -H "Authorization: Bearer <your_token>" http://localhost:8000/data
+```
 
 ## 📁 Project Structure
 ```text
