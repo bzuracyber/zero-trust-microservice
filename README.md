@@ -34,15 +34,16 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 
 ### 1. Clone the Repo
 
-git clone https://github.com/yourusername/zero-trust-lab.git
-cd zero-trust-lab
+    git clone https://github.com/bzuracyber/zero-trust-microservice.git
+
+    cd zero-trust-lab
 
 ### 2. Start Keycloak
 
-docker run -p 8080:8080 \
-  -e KEYCLOAK_ADMIN=admin \
-  -e KEYCLOAK_ADMIN_PASSWORD=admin \
-  quay.io/keycloak/keycloak:latest start-dev
+    docker run -p 8080:8080 \
+      -e KEYCLOAK_ADMIN=admin \
+      -e KEYCLOAK_ADMIN_PASSWORD=admin \
+      quay.io/keycloak/keycloak:latest start-dev
 
 - Access Keycloak at http://localhost:8080
 - Create a realm, client (fastapi-client), and user
@@ -51,7 +52,7 @@ docker run -p 8080:8080 \
 
 ### 3. Start OPA Server
 
-opa run --server --log-level debug --set=decision_logs.console=true
+    opa run --server --log-level debug --set=decision_logs.console=true
 
 - OPA listens on http://localhost:8181
 - Create a policy file policy.rego:
@@ -60,15 +61,15 @@ package authz
 
 default allow = false
 
-allow {
-  input.method == "GET"
-  input.path == "/data"
-  input.user == "alice"
-}
+    allow {
+      input.method == "GET"
+      input.path == "/data"
+      input.user == "alice"
+    }
 
 Load it into OPA:
 
-curl -X PUT --data-binary @policy.rego \ localhost:8181/v1/policies/authz
+    curl -X PUT --data-binary @policy.rego \ localhost:8181/v1/policies/authz
 
 ### 4. FastAPI App
   Install dependencies:
@@ -76,48 +77,49 @@ curl -X PUT --data-binary @policy.rego \ localhost:8181/v1/policies/authz
     pip install fastapi uvicorn python-jose requests
 
    Create main.py:
-   from fastapi import FastAPI, Depends, HTTPException, Request
-from fastapi.security import OAuth2PasswordBearer
-import requests
-from jose import jwt
+    
+    from fastapi import FastAPI, Depends, HTTPException, Request
+    from fastapi.security import OAuth2PasswordBearer
+    import requests
+    from jose import jwt
 
-app = FastAPI()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+    app = FastAPI()
+    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-KEYCLOAK_PUBLIC_KEY = "your-public-key"
-OPA_URL = "http://localhost:8181/v1/data/authz/allow"
+    KEYCLOAK_PUBLIC_KEY = "your-public-key"
+    OPA_URL = "http://localhost:8181/v1/data/authz/allow"
 
-def verify_token(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, KEYCLOAK_PUBLIC_KEY, algorithms=["RS256"])
-        return payload
-    except Exception:
-        raise HTTPException(status_code=401, detail="Invalid token")
+    def verify_token(token: str = Depends(oauth2_scheme)):
+        try:
+            payload = jwt.decode(token, KEYCLOAK_PUBLIC_KEY, algorithms=["RS256"])
+            return payload
+        except Exception:
+            raise HTTPException(status_code=401, detail="Invalid token")
 
-@app.get("/data")
-def get_data(user=Depends(verify_token), request: Request = None):
-    input_data = {
-        "input": {
-            "method": request.method,
-            "path": request.url.path,
-            "user": user["preferred_username"]
+    @app.get("/data")
+    def get_data(user=Depends(verify_token), request: Request = None):
+        input_data = {
+            "input": {
+                "method": request.method,
+                "path": request.url.path,
+                "user": user["preferred_username"]
+            }
         }
-    }
-    response = requests.post(OPA_URL, json=input_data)
-    if response.json().get("result"):
-        return {"message": "Access granted"}
-    raise HTTPException(status_code=403, detail="Access denied")
+        response = requests.post(OPA_URL, json=input_data)
+        if response.json().get("result"):
+            return {"message": "Access granted"}
+        raise HTTPException(status_code=403, detail="Access denied")
 
 Run the app:
 
-  uvicorn main:app --reload
+    uvicorn main:app --reload
 
 ## 🔍 Testing the Flow
 Get a token from Keycloak using your client credentials
 
 Call FastAPI with the token:
 
-  curl -H "Authorization: Bearer <your_token>" http://localhost:8000/data
+    curl -H "Authorization: Bearer <your_token>" http://localhost:8000/data
 
 ## 📁 Project Structure
   zero-trust-lab/
