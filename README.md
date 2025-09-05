@@ -34,12 +34,14 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 
 ### 1. Clone the Repo
 
+    ```bash
     git clone https://github.com/bzuracyber/zero-trust-microservice.git
 
     cd zero-trust-lab
 
 ### 2. Start Keycloak
 
+    ```bash
     docker run -p 8080:8080 \
       -e KEYCLOAK_ADMIN=admin \
       -e KEYCLOAK_ADMIN_PASSWORD=admin \
@@ -52,32 +54,37 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 
 ### 3. Start OPA Server
 
+    ```bash
     opa run --server --log-level debug --set=decision_logs.console=true
 
 - OPA listens on http://localhost:8181
 - Create a policy file policy.rego:
 
-package authz
+    # OPA policy language
+        package authz
 
-default allow = false
+        default allow = false
 
-    allow {
-      input.method == "GET"
-      input.path == "/data"
-      input.user == "alice"
-    }
+            allow {
+              input.method == "GET"
+              input.path == "/data"
+              input.user == "alice"
+            }
 
 Load it into OPA:
 
-    curl -X PUT --data-binary @policy.rego \ localhost:8181/v1/policies/authz
+     ```bash
+     curl -X PUT --data-binary @policy.rego \ localhost:8181/v1/policies/authz
 
 ### 4. FastAPI App
   Install dependencies:
 
+    ```bash
     pip install fastapi uvicorn python-jose requests
 
    Create main.py:
-    
+   
+    # Python code
     from fastapi import FastAPI, Depends, HTTPException, Request
     from fastapi.security import OAuth2PasswordBearer
     import requests
@@ -112,6 +119,7 @@ Load it into OPA:
 
 Run the app:
 
+    ```bash
     uvicorn main:app --reload
 
 ## 🔍 Testing the Flow
@@ -119,6 +127,7 @@ Get a token from Keycloak using your client credentials
 
 Call FastAPI with the token:
 
+    ```bash
     curl -H "Authorization: Bearer <your_token>" http://localhost:8000/data
 
 ## 📁 Project Structure
