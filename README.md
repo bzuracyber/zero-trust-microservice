@@ -1,3 +1,61 @@
+# Mission Data Exchange – Zero Trust Microservice Architecture
+
+## Scenario
+You are tasked with designing and accrediting a secure, containerized microservice platform for a fictional DoD mission partner network.  
+The system must:
+
+- Handle **Sensitive But Unclassified (SBU)** mission data
+- Enforce **continuous authentication and authorization**
+- Remain **resilient under attack**
+- Produce **RMF‑ready documentation** throughout the lifecycle
+
+---
+
+## Core Components
+
+### 1. API Gateway & Service Mesh
+- Envoy or Istio for **mTLS** between services
+- **JWT/OIDC** authentication via Keycloak
+- Policy enforcement with **OPA/Rego**
+
+### 2. Microservices
+- **Data Ingest Service** – receives mission data from external partner
+- **Data Processing Service** – applies classification rules
+- **Data Access Service** – serves authorized users
+
+### 3. Security Tooling
+- **Static**: Semgrep, Trivy, Terrascan
+- **Dynamic**: OWASP ZAP, k6 for load testing
+- **Runtime**: Falco for anomaly detection
+
+### 4. Supply Chain Assurance
+- SBOM generation (Syft/Grype)
+- Vulnerability scanning in CI/CD
+
+### 5. Continuous Monitoring
+- SIEM integration (Splunk or OpenSearch)
+- Automated compliance checks in pipeline
+
+---
+
+## RMF Step Alignment
+
+| **RMF Step** | **Lab Activity** | **Artifact Produced** |
+|--------------|------------------|-----------------------|
+| **Categorize** | Define mission profile, data types, CIA impact | Mission Profile doc, Data Flow Diagram |
+| **Select** | Tailor NIST SP 800‑53 controls + Zero Trust overlay | Control Tailoring Matrix |
+| **Implement** | Build microservices with Zero Trust patterns | Secure Architecture Diagram, Config Baselines |
+| **Assess** | Run static/dynamic/runtime tests | Test Reports, Vulnerability Scan Results |
+| **Authorize** | Present risk posture to fictional AO | Risk Assessment Report, POA&M |
+| **Monitor** | Automate scans, log analysis, change tracking | Continuous Monitoring Plan, Updated SSP |
+
+---
+
+## Purpose of This Lab
+This lab is designed to simulate a **full RMF lifecycle** in a Zero Trust microservice environment, producing both **technical implementations** and **compliance artifacts**.  
+It serves as a hands‑on training platform for engineers, ISSEs, and security architects working in **DoD and regulated environments**.
+
+
 # 🔐 Zero Trust Microservice Lab: Keycloak + OPA + FastAPI
 
 This lab demonstrates a hybrid Zero Trust architecture using:
