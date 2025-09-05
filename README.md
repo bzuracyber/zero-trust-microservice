@@ -76,7 +76,7 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 Load it into OPA:
 
  ```bash
-     curl -X PUT --data-binary @policy.rego \ localhost:8181/v1/policies/authz
+ curl -X PUT --data-binary @policy.rego \ localhost:8181/v1/policies/authz
 ```
 
 ### 4. FastAPI App
