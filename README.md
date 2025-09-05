@@ -37,7 +37,7 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 ```bash
 git clone https://github.com/bzuracyber/zero-trust-microservice.git
 
-cd zero-trust-lab
+cd zero-trust-microservice
 ```
 
 ### 2. Start Keycloak
