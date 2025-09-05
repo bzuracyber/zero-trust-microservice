@@ -34,18 +34,20 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 
 ### 1. Clone the Repo
 
-    ```bash
+```bash
     git clone https://github.com/bzuracyber/zero-trust-microservice.git
 
     cd zero-trust-lab
+```
 
 ### 2. Start Keycloak
 
-    ```bash
+```bash
     docker run -p 8080:8080 \
       -e KEYCLOAK_ADMIN=admin \
       -e KEYCLOAK_ADMIN_PASSWORD=admin \
       quay.io/keycloak/keycloak:latest start-dev
+```
 
 - Access Keycloak at http://localhost:8080
 - Create a realm, client (fastapi-client), and user
@@ -54,9 +56,9 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 
 ### 3. Start OPA Server
 
-    ```bash
+ ```bash
     opa run --server --log-level debug --set=decision_logs.console=true
-
+```
 - OPA listens on http://localhost:8181
 - Create a policy file policy.rego:
 
@@ -73,15 +75,16 @@ Zero Trust means “never trust, always verify.” This lab shows how to:
 
 Load it into OPA:
 
-     ```bash
+ ```bash
      curl -X PUT --data-binary @policy.rego \ localhost:8181/v1/policies/authz
+```
 
 ### 4. FastAPI App
   Install dependencies:
 
-    ```bash
+ ```bash
     pip install fastapi uvicorn python-jose requests
-
+```
    Create main.py:
    
     # Python code
@@ -119,8 +122,9 @@ Load it into OPA:
 
 Run the app:
 
-    ```bash
+```bash
     uvicorn main:app --reload
+```
 
 ## 🔍 Testing the Flow
 Get a token from Keycloak using your client credentials
@@ -131,10 +135,13 @@ Call FastAPI with the token:
     curl -H "Authorization: Bearer <your_token>" http://localhost:8000/data
 
 ## 📁 Project Structure
-  zero-trust-lab/
-  ├── main.py
-  ├── policy.rego
-  ├── README.md
+```text
+zero-trust-lab/
+├── main.py
+├── policy.rego
+├── README.md
+```
+
 
 ## 🧪 Extensions
 Add role-based access control in Rego
@@ -143,13 +150,16 @@ Use FastAPI middleware for token introspection
 Add logging and audit trails
 
 ## 🧠 Concepts Demonstrated
-Component	Role in Zero Trust
-Keycloak	Identity Provider (IdP)
-OPA	Policy Decision Point (PDP)
-FastAPI	Policy Enforcement Point (PEP)
+
+| Component | Role in Zero Trust              |
+|-----------|---------------------------------|
+| Keycloak  | Identity Provider (IdP)         |
+| OPA       | Policy Decision Point (PDP)     |
+| FastAPI   | Policy Enforcement Point (PEP)  |
+
 
 ## 📚 References
-Keycloak Docs
-OPA Docs
-FastAPI Docs
+- Keycloak Docs
+- OPA Docs
+- FastAPI Docs
 
